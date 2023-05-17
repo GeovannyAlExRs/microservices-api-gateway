@@ -1,4 +1,4 @@
-package com.company.dtk.microservicesapigateway.model.repository;
+package com.company.dtk.microservicesapigateway.repository;
 
 import com.company.dtk.microservicesapigateway.model.Roles;
 import com.company.dtk.microservicesapigateway.model.Users;
