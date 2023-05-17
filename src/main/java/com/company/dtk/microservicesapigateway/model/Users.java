@@ -1,9 +1,11 @@
 package com.company.dtk.microservicesapigateway.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name="users")
 public class Users {
@@ -22,4 +24,8 @@ public class Users {
 
     @Column(name = "date", nullable = false)
     private LocalDateTime date;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Roles role;
 }
