@@ -39,13 +39,24 @@ public class SecurityConfig {
 
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 
-        httpSecurity.csrf().disable().cors().disable()
-                .securityMatcher("/api/authentication/sing-in", "/api/authentication/sing-up")
-                .authorizeHttpRequests()
+        return httpSecurity
+                .securityMatcher("/api/authentication/**")
+                .authorizeRequests()//.authorizeHttpRequests()
+                .anyRequest()
+                .authenticated()
+                .and().cors()
+                .and().csrf()
+                .disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationManager(authenticationManager)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class) //invoke Authorization Filter
+                .build();
+    }
 
-        return httpSecurity.build();
+    // Start injection Authorization Filter
+    @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+        return new JwtAuthorizationFilter();
     }
 }
