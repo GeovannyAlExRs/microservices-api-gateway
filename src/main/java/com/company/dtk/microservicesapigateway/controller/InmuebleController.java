@@ -25,9 +25,9 @@ public class InmuebleController {
                 HttpStatus.CREATED);
     }
 
-    @DeleteMapping("{inmuebleId}")
-    public ResponseEntity<?> deleteInmueble(@PathVariable("inmuebleId") Long inmuebleId) {
-        inmuebleServiceRequest.deleteInmueble(inmuebleId);
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteInmueble(@PathVariable("id") Long id) {
+        inmuebleServiceRequest.deleteInmueble(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

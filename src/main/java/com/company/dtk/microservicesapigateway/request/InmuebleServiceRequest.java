@@ -16,8 +16,8 @@ public interface InmuebleServiceRequest {
     @PostMapping
     Object createInmueble(@RequestBody Object requestObject);
 
-    @DeleteMapping
-    void deleteInmueble(@PathVariable("inmuebleId") Long inmuebleId);
+    @DeleteMapping("{id}")
+    void deleteInmueble(@PathVariable("id") Long id);
 
     @GetMapping()
     List<Object> getAllInmueble();
