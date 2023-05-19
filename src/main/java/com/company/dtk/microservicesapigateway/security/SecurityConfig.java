@@ -42,6 +42,7 @@ public class SecurityConfig {
         httpSecurity
                 .cors().and().csrf().disable()
                 .authenticationManager(authenticationManager)
+                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class) //invoke Authorization Filter
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity
