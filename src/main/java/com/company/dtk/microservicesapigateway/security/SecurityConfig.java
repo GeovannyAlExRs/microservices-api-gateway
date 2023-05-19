@@ -1,9 +1,11 @@
 package com.company.dtk.microservicesapigateway.security;
 
+import com.company.dtk.microservicesapigateway.model.Roles;
 import com.company.dtk.microservicesapigateway.security.jwt.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -49,6 +51,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/authentication/sign-in", "/api/authentication/sign-up")
                 .permitAll()
+                .requestMatchers(HttpMethod.GET, "/gateway/inmueble").permitAll()
+                .requestMatchers("/gateway/inmueble/**").hasRole(Roles.ADMIN.name())
                 .anyRequest()
                 .authenticated();
 

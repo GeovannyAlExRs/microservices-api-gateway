@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @FeignClient(
-        value = "inmueble*service",
+        value = "inmueble-service",
         path = "/api/inmueble",
         url = "${inmueble.service.url}",
         configuration = FeignConfiguration.class
