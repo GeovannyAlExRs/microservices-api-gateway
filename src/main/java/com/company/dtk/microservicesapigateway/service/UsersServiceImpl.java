@@ -3,6 +3,7 @@ package com.company.dtk.microservicesapigateway.service;
 import com.company.dtk.microservicesapigateway.model.Roles;
 import com.company.dtk.microservicesapigateway.model.Users;
 import com.company.dtk.microservicesapigateway.repository.UsersRepository;
+import com.company.dtk.microservicesapigateway.security.jwt.JwtProviderImpl;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +21,9 @@ public class UsersServiceImpl implements  UsersService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtProviderImpl jwtProvider;
+
     @Override
     public Users createUser(Users users) {
 
@@ -27,7 +31,10 @@ public class UsersServiceImpl implements  UsersService {
         users.setRole(Roles.USER);
         users.setDate(LocalDateTime.now());
 
-        return usersRepository.save(users);
+        Users userToken = usersRepository.save(users);
+        userToken.setToken(jwtProvider.generateToken(userToken));
+
+        return userToken;
     }
 
     @Override

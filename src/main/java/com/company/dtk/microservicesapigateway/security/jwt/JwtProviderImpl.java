@@ -1,5 +1,6 @@
 package com.company.dtk.microservicesapigateway.security.jwt;
 
+import com.company.dtk.microservicesapigateway.model.Users;
 import com.company.dtk.microservicesapigateway.security.UsersPrincipal;
 import com.company.dtk.microservicesapigateway.utils.SecurityUtils;
 import io.jsonwebtoken.Claims;
@@ -46,6 +47,23 @@ public class JwtProviderImpl implements JwtProvider {
                 .setSubject(auth.getUsername())
                 .claim("roles", authorities)
                 .claim("userId", auth.getId())
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_IN_MS))
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+    // TODO: Function for save Token generated of Users (Polimorfismo)
+    @Override
+    public String generateToken(Users users) {
+
+        // Decrypt the token
+        Key key = Keys.hmacShaKeyFor(JWT_SECRET.getBytes(StandardCharsets.UTF_8));
+
+        // Return the Token
+        return Jwts.builder()
+                .setSubject(users.getUsername())
+                .claim("roles", users.getRole())
+                .claim("userId", users.getId())
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_IN_MS))
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
