@@ -39,9 +39,23 @@ public class SecurityConfig {
 
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 
-        return httpSecurity
-                .securityMatcher("/api/authentication/**")
-                .authorizeRequests()//.authorizeHttpRequests()
+        httpSecurity
+                .cors().and().csrf().disable()
+                .authenticationManager(authenticationManager)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        httpSecurity
+                .authorizeHttpRequests()
+                .requestMatchers("/api/authentication/sign-in", "/api/authentication/sign-up")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
+
+        return httpSecurity.build();
+
+        /*return httpSecurity
+                .securityMatcher("/api/authentication/sign-in", "/api/authentication/sign-up")
+                .authorizeHttpRequests() // .authorizeRequests()
                 .anyRequest()
                 .authenticated()
                 .and().cors()
@@ -51,7 +65,7 @@ public class SecurityConfig {
                 .and()
                 .authenticationManager(authenticationManager)
                 .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class) //invoke Authorization Filter
-                .build();
+                .build();*/
     }
 
     // Start injection Authorization Filter
