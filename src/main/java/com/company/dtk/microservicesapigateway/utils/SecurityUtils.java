@@ -19,11 +19,14 @@ public class SecurityUtils {
         return new SimpleGrantedAuthority(formattedRole);
     }
 
+    // TODO: Method for extracting the token to send it to the HEADER
     public static String extractAuthTokenFromRequest(HttpServletRequest httpServletRequest) {
-        String bearerToken = httpServletRequest.getHeader(AUTH_HEADER);
+        String bearer = httpServletRequest.getHeader(AUTH_HEADER);
 
-        if (StringUtils.hasLength(bearerToken) && bearerToken.startsWith(AUTH_TOKEN_PREFIX)) {
-            return bearerToken.substring(7);
+        /** Check if there is a token inside the HEADER and (&&)
+         * if there is a token then it must start with the word BEARER.*/
+        if (StringUtils.hasLength(bearer) && bearer.startsWith(AUTH_TOKEN_PREFIX)) {
+            return bearer.substring(7); // return only the value of the TOKEN without the BEARER_
         }
         return null;
     }
