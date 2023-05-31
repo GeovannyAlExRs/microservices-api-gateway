@@ -19,8 +19,17 @@ public class Users {
     @Column(name = "password", nullable = false)
     private  String password;
 
-    @Column(name = "name", nullable = false)
-    private  String name;
+    @Column(name="email", nullable = false)
+    private String email;
+
+    @Column(name="phone", nullable = false)
+    private String phone;
+
+    @Column(name = "lastname", nullable = false)
+    private  String lastname;
+
+    @Column(name = "firstname", nullable = false)
+    private  String firstname;
 
     @Column(name = "date", nullable = false)
     private LocalDateTime date;
