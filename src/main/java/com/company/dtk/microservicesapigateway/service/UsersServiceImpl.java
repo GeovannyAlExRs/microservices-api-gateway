@@ -6,6 +6,7 @@ import com.company.dtk.microservicesapigateway.repository.UsersRepository;
 import com.company.dtk.microservicesapigateway.security.jwt.JwtProviderImpl;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,9 +43,25 @@ public class UsersServiceImpl implements  UsersService {
         return usersRepository.findByUsername(username);
     }
 
+    @Override
+    public Optional<Users> findByEmail(String email) {
+        return usersRepository.findByEmail(email);
+    }
+
     @Transactional
     @Override
     public void updateUserRole(String username, Roles role) {
         usersRepository.updateUserRole(username, role);
+    }
+
+    @Override
+    public Users findByUsernameGetToken(String username) {
+        Users users = usersRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("El usuario " + username + " no existe")
+        );
+
+        String jwtToken = jwtProvider.generateToken(users);
+        users.setToken(jwtToken);
+        return users;
     }
 }
