@@ -10,5 +10,9 @@ public interface UsersService {
 
     Optional<Users> findByUsername(String username);
 
+    Optional<Users> findByEmail(String email);
+
     void updateUserRole(String username, Roles role);
+
+    Users findByUsernameGetToken(String username);
 }
