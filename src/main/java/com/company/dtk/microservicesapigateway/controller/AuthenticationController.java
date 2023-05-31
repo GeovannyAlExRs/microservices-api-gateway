@@ -34,6 +34,9 @@ public class AuthenticationController {
             log.info("Ingreso al IF " + HttpStatus.CONFLICT);
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
+        if(usersService.findByEmail(users.getEmail()).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
 
         log.info("ENTRO POR AQUI " + HttpStatus.CREATED);
         return new ResponseEntity<>(usersService.createUser(users), HttpStatus.CREATED);
@@ -41,6 +44,7 @@ public class AuthenticationController {
 
     @PostMapping("sign-in")
     public ResponseEntity<?> signIn(@RequestBody Users users) {
+        log.info("-> SIGN IN USER: " + users);
         return new ResponseEntity<>(
                 authenticationService.singInAndReturnJWT(users), HttpStatus.OK
         );
