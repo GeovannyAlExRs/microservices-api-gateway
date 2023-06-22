@@ -46,7 +46,6 @@ public class SecurityConfig {
         httpSecurity
                 .cors().and().csrf().disable()
                 .authenticationManager(authenticationManager)
-                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class) //invoke Authorization Filter
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity
@@ -58,7 +57,9 @@ public class SecurityConfig {
                 .anyRequest()
                 .authenticated();
 
-        return httpSecurity.build();
+        return httpSecurity
+                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class) //invoke Authorization Filter
+                .build();
 
         /*return httpSecurity
                 .securityMatcher("/api/authentication/sign-in", "/api/authentication/sign-up")
